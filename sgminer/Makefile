@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sgminer
 
-PKG_VERSION:=git-$(shell git ls-remote dev https://github.com/hashland/sgminer-baikal | cut -f1 | cut -c1-7)
+PKG_VERSION:=git-$(shell git ls-remote https://github.com/hashland/sgminer-baikal dev | cut -f1 | cut -c1-7)
 PKG_REV:=dev
 
 PKG_RELEASE:=1
