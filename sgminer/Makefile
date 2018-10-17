@@ -26,7 +26,7 @@ define Package/sgminer
 	CATEGORY:=Utilities
 	TITLE:=sgminer
 	URL:=https://github.com/hashland/sgminer-baikal
-	DEPENDS:=+libcurl +libpthread +jansson +libusb-1.0 +libncurses
+	DEPENDS:=+libcurl +libpthread +jansson +libusb-1.0
 endef
 
 define Package/sgminer/description
@@ -37,7 +37,7 @@ endef
 
 TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib
 
-CONFIGURE_ARGS += --disable-udev --disable-git-version --with-system-libusb
+CONFIGURE_ARGS += --disable-udev --disable-git-version --with-system-libusb --without-curses
 
 define Build/Compile
 	$(call Build/Compile/Default)
@@ -45,8 +45,8 @@ endef
 
 define Package/sgminer/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/sgminer  $(1)/usr/bin
 
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/sgminer  $(1)/usr/bin
 endef
 
 $(eval $(call BuildPackage,sgminer))
