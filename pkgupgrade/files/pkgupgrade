@@ -1,0 +1,17 @@
+#!/bin/ash
+opkg update
+
+PACKAGES="$(opkg list-upgradable |awk '{print $1}')"
+
+if [ -n "${PACKAGES}" ]; then
+  opkg upgrade ${PACKAGES}
+
+  if [ "$?" -eq 0 ]; then
+  	echo "Packages were successfully updated"
+  else
+  	echo "Packages could not be updated"
+	exit 1
+  fi
+else
+  	echo "No updates available"
+fi
