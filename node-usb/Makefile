@@ -1,18 +1,13 @@
-# This is free software, licensed under the GNU General Public License v2.
-# See /LICENSE for more information.
-#
-
 include $(TOPDIR)/rules.mk
 
 PKG_NPM_NAME:=usb
 PKG_NAME:=node-$(PKG_NPM_NAME)
-PKG_VERSION:=git-$(shell git ls-remote https://github.com/hashland/node-usb hashland | cut -f1 | cut -c1-7)
+PKG_VERSION:=1.5.0
 PKG_RELEASE:=1
 
-PKG_REV:=hashland
-PKG_SOURCE_URL:=git://github.com/hashland/node-usb.git
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_VERSION:=$(PKG_REV)
+PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
+PKG_SOURCE_URL:=http://registry.npmjs.org/$(PKG_NPM_NAME)/-/
+PKG_HASH:=57059a121220271d5041b34b932f3411726d0a950ec0b9d1e2ed359013f1a5a9
 
 PKG_BUILD_DEPENDS:=node/host
 PKG_USE_MIPS16:=0
@@ -35,6 +30,9 @@ endef
 define Package/node-usb/description
  Node.js library for communicating with USB devices in JavaScript / CoffeeScript
 endef
+
+TAR_OPTIONS+= --strip-components 1
+TAR_CMD=$(HOST_TAR) -C $(1) $(TAR_OPTIONS)
 
 NODEJS_CPU:=$(subst powerpc,ppc,$(subst aarch64,arm64,$(subst x86_64,x64,$(subst i386,ia32,$(ARCH)))))
 
