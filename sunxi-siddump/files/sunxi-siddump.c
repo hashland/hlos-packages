@@ -80,19 +80,16 @@ int main(int argc, char **argv) {
     int fd, i;
     void *map_base, *virt_addr; 
     off_t target;
-    char serial_string[17] = { 0 };
     uint8_t mac_addr[6];
     unsigned int sid[4], sid_crc;
 
     if((fd = open("/dev/mem", O_RDWR | O_SYNC)) == -1) FATAL;
    
+    map_base = mmap(0, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, SUNXI_SID_BASE & ~MAP_MASK);
+    if(map_base == (void *) -1) FATAL;
 
     for(i=0; i< 4; i++) {
 	target = SUNXI_SID_BASE + (i * 4); 
-    
-	map_base = mmap(0, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, target & ~MAP_MASK);
-        if(map_base == (void *) -1) FATAL;
-    	
 	virt_addr = map_base + (target & MAP_MASK);
     	sid[i] = *((unsigned long *) virt_addr);
     }
