@@ -9,7 +9,7 @@ start() {
         MINUTE=$(expr $(head /dev/urandom | tr -dc "0123456789" | head -c3) % 60)
 
         grep -q pkgupgrade /etc/crontabs/root || {
-                echo $MINUTE $HOUR '* * * [ $(uci get pkgupgrade.auto_upgrade.enabled) == 1 ] && (pkgupgrade | logger -t pkgupgrade -s)' >> /etc/crontabs/root
+                echo $MINUTE $HOUR '* * * [ $(uci get pkgupgrade.auto_upgrade.enabled) == 1 ] && (pkgupgrade 2>&1 | logger -t pkgupgrade -s)' >> /etc/crontabs/root
 		/etc/init.d/cron restart
         }
 }

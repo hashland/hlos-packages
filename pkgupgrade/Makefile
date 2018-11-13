@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=pkgupgrade
-PKG_RELEASE:=3
+PKG_RELEASE:=4
 
 PKG_MAINTAINER:=Julian Haupt <julian.haupt@hashland.de>
 PKG_LICENSE:=MIT
