@@ -12,6 +12,16 @@ if [ -n "${PACKAGES}" ]; then
   	echo "Packages could not be updated"
 	exit 1
   fi
+
+  # refresh all services
+  [ -f /tmp/luci-indexcache ] && rm -rf /tmp/luci-indexcache
+  [ -d /tmp/luci-modulecache/ ] && rm -rf /tmp/luci-modulecache/
+
+  [ -x /etc/init.d/uhttpd ] && /etc/init.d/uhttpd restart
+  [ -x /etc/init.d/dropbear ] && /etc/init.d/dropbear restart
+  [ -x /etc/init.d/hlminer ] && /etc/init.d/hlminer restart
+  [ -x /etc/init.d/rpcd ] && /etc/init.d/rpcd reload
+
 else
   	echo "No updates available"
 fi
