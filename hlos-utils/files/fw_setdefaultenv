@@ -1,0 +1,27 @@
+#!/bin/sh
+
+. /lib/functions.sh
+
+HASHLAND_API_KEY=$(uci get hlos.@account[0].api_key)
+
+case "$(board_name)" in
+"baikal,giant-b")
+
+eval $(sunxi-siddump)
+
+cat <<EOF >/tmp/uenv.txt
+ethaddr $MAC
+serial# $SERIAL
+hashland_api_key $HASHLAND_API_KEY
+bootcmd
+bootdelay
+baudrate
+EOF
+
+fw_setenv --script /tmp/uenv.txt
+rm /tmp/uenv.txt
+
+	;;
+esac
+
+
