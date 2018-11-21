@@ -1,0 +1,37 @@
+#!/bin/sh
+
+. /lib/functions.sh
+. /usr/share/libubox/jshn.sh
+. /etc/openwrt_release
+
+get_config() {
+	config_get_bool enable $1 enable 0
+	config_get desired_version $1 version "@stable"
+}
+
+config_load hlos
+config_foreach get_config update
+
+if [ -z "$desired_version" ]; then
+	desired_version="@stable"
+fi
+
+if [ "$enable" = 0 -a "$1" != "--force"  ]; then
+	2>&1 echo Updates are disabled, use --force to override
+	exit 1
+fi
+
+json_init
+json_load "$(hl sysimage $(board_name) $desired_version)"
+
+json_get_vars url version
+
+if [ -n "$version" -a -n "$url" -a "$version" != "$DISTRIB_RELEASE" ]; then
+	echo "Upgrading to newer version $version"
+	exec sysupgrade $url
+
+else 
+	echo No new sysimage available, triggering pkgupgrade
+	exec pkgupgrade
+fi
+

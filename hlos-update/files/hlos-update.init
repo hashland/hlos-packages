@@ -8,8 +8,8 @@ start() {
         HOUR=$(expr $(head /dev/urandom | tr -dc "0123456789" | head -c3) % 24)
         MINUTE=$(expr $(head /dev/urandom | tr -dc "0123456789" | head -c3) % 60)
 
-        grep -q pkgupgrade /etc/crontabs/root || {
-                echo $MINUTE $HOUR '* * * [ $(uci get pkgupgrade.auto_upgrade.enabled) == 1 ] && (pkgupgrade 2>&1 | logger -t pkgupgrade -s)' >> /etc/crontabs/root
+        grep -q hlos-update /etc/crontabs/root || {
+                echo $MINUTE $HOUR '* * * (hlos-update 2>&1 | logger -t hlos-update -s)' >> /etc/crontabs/root
 		/etc/init.d/cron restart
         }
 }
